@@ -22,6 +22,21 @@ export class PostService {
     await this.postRepository.save(post);
   }
 
+  async getPost(idx: number): Promise<Post> {
+    const post = await this.postRepository.findByPostIdxByIsDeleted(idx, false);
+
+    if (!post) {
+      throw new HttpException(
+        {
+          message: '존재하지 않는 글',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return post;
+  }
+
   async getAllPosts(): Promise<Post[]> {
     const posts = await this.postRepository.findByIsDeletedOrderByCreatedAtDesc(
       false,
@@ -68,7 +83,7 @@ export class PostService {
   }
 
   async removePost(idx: number): Promise<void> {
-    const post = await this.postRepository.findByPostIdxByIsDeleted(idx, false);
+    const post = await this.postRepository.findByPostIdx(idx);
 
     if (!post) {
       throw new HttpException(

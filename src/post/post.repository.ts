@@ -10,6 +10,10 @@ export class PostRepository extends Repository<Post> {
       .getMany();
   }
 
+  findByPostIdx(idx: number): Promise<Post> {
+    return this.createQueryBuilder().where('idx = :idx', { idx }).getOne();
+  }
+
   findByPostIdxByIsDeleted(idx: number, isDeleted: boolean): Promise<Post> {
     return this.createQueryBuilder()
       .where('idx = :idx', { idx })

@@ -25,9 +25,20 @@ export class PostController {
     };
   }
 
+  @Get('/:idx')
+  async getPost(@Param('idx') postIdx: number): Promise<IResponse> {
+    const post = await this.postService.getPost(postIdx);
+
+    return {
+      message: '글 조회 성공.',
+      data: post,
+    };
+  }
+
   @Get()
   async getAllPosts(): Promise<IResponse> {
     const posts = await this.postService.getAllPosts();
+
     return {
       message: '글 목록 조회 성공.',
       data: posts,
